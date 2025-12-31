@@ -70,7 +70,7 @@ type ToastState = {
 function DashboardConfigPanel() {
   const [selectedOrg, setSelectedOrg] = useState<string>("");
   const [orgOptions, setOrgOptions] = useState<
-    { label: string; value: string; meta?: string | null }[]
+    { label: string; value: string; meta?: string }[]
   >([]);
   const [orgLoading, setOrgLoading] = useState(true);
   const [orgError, setOrgError] = useState<string | null>(null);

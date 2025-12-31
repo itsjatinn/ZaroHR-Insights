@@ -233,7 +233,7 @@ function DatePicker({ value, onChange, placeholder, min }: DatePickerProps) {
             weekStartsOn={1}
             month={displayMonth}
             onMonthChange={setDisplayMonth}
-            captionLayout="buttons"
+            captionLayout="dropdown"
           />
         </div>
       ) : null}

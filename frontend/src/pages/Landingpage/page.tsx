@@ -10,7 +10,6 @@ import Footer from "./components/Footer";
 
 interface LandingPageProps {
   onPrimaryAction?: () => void;
-  onSecondaryAction?: () => void;
   onContactAction?: () => void;
   onDemoAction?: () => void;
 }
@@ -108,7 +107,6 @@ const Index = ({
     <main className="landing-page">
       <Navbar
         onPrimaryAction={onPrimaryAction}
-        onSecondaryAction={openDemo}
         onContactAction={onContactAction}
       />
       <HeroSection
@@ -119,7 +117,6 @@ const Index = ({
       <TestimonialsSection />
       <CTASection
         onPrimaryAction={onContactAction}
-        onSecondaryAction={openDemo}
       />
       <Footer />
       {demoOpen && (

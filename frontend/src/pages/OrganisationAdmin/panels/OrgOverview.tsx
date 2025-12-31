@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { FiActivity, FiFileText, FiTrendingUp, FiUsers } from "react-icons/fi";
+import { FiActivity, FiFileText, FiTrendingUp } from "react-icons/fi";
 
 const API_BASE_URL =
   import.meta.env.VITE_API_BASE_URL ?? "http://localhost:8000";

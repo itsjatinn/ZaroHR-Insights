@@ -1,13 +1,10 @@
-import { FiArrowRight, } from "react-icons/fi";
-
-
+import { FiArrowRight } from "react-icons/fi";
 
 interface CTASectionProps {
   onPrimaryAction?: () => void;
-  onSecondaryAction?: () => void;
 }
 
-const CTASection = ({ onPrimaryAction, onSecondaryAction }: CTASectionProps) => {
+const CTASection = ({ onPrimaryAction }: CTASectionProps) => {
   return (
     <section id="contact" className="landing-section  landing-cta">
       <div className="landing-container">

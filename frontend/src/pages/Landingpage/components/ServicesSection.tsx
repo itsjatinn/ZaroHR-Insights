@@ -1,5 +1,4 @@
 import {
-  FiArrowRight,
   FiBarChart2,
   FiCpu,
   FiPieChart,

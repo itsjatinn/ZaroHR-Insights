@@ -3,13 +3,11 @@ import { FiLogIn, FiMenu, FiX } from "react-icons/fi";
 
 interface NavbarProps {
   onPrimaryAction?: () => void;
-  onSecondaryAction?: () => void;
   onContactAction?: () => void;
 }
 
 const Navbar = ({
   onPrimaryAction,
-  onSecondaryAction,
   onContactAction,
 }: NavbarProps) => {
   const [isOpen, setIsOpen] = useState(false);

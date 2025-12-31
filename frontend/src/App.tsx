@@ -8,7 +8,6 @@ import {
 } from "react";
 import type {
   CSSProperties,
-  ChangeEvent,
   ReactNode,
   RefObject,
 } from "react";
@@ -592,7 +591,22 @@ type View =
   | "org-admin"
   | "contact"
   | "login"
+  | "forgot"
+  | "reset"
   | "signup";
+
+type ChartKey =
+  | "manpower_rampup"
+  | "hires_exits"
+  | "worklevel_overview"
+  | "entity_overview"
+  | "overall_attrition"
+  | "entity_attrition"
+  | "age_attrition"
+  | "gender_attrition"
+  | "tenure_attrition";
+
+type ChartConfig = Record<ChartKey, boolean>;
 
 type HistoryState = {
   view: View;
@@ -634,9 +648,8 @@ function App() {
   const [selectedMonthKey, setSelectedMonthKey] = useState<string | null>(null);
   const [entityError, setEntityError] = useState<string | null>(null);
   const [entityLoading, setEntityLoading] = useState(false);
-  const [dashboardReady, setDashboardReady] = useState(false);
   const [chartsReady, setChartsReady] = useState(false);
-  const [chartConfig, setChartConfig] = useState<Record<string, boolean>>({
+  const [chartConfig, setChartConfig] = useState<ChartConfig>({
     manpower_rampup: true,
     hires_exits: true,
     worklevel_overview: true,
@@ -1141,7 +1154,7 @@ function App() {
           throw new Error(await response.text());
         }
         const payload = await response.json();
-        const nextMap = {
+        const nextMap: ChartConfig = {
           manpower_rampup: true,
           hires_exits: true,
           worklevel_overview: true,
@@ -1154,7 +1167,9 @@ function App() {
         };
         (payload.charts ?? []).forEach(
           (item: { key: string; enabled: boolean }) => {
-            nextMap[item.key] = item.enabled;
+            if (item.key in nextMap) {
+              nextMap[item.key as ChartKey] = item.enabled;
+            }
           }
         );
         setChartConfig(nextMap);
@@ -1757,13 +1772,6 @@ function App() {
     return (
       <LandingPage
         onPrimaryAction={() =>
-          window.open(
-            `${window.location.origin}?view=login`,
-            "_blank",
-            "noopener"
-          )
-        }
-        onSecondaryAction={() =>
           window.open(
             `${window.location.origin}?view=login`,
             "_blank",
