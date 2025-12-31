@@ -1,0 +1,26 @@
+{
+  "name": "server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "prisma:generate": "prisma generate",
+    "prisma:migrate": "prisma migrate dev --name init",
+    "prisma:studio": "prisma studio",
+    "ingest": "node src/ingest.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.1.0",
+    "@prisma/client": "^7.1.0",
+    "dotenv": "^17.2.3",
+    "exceljs": "^4.4.0",
+    "nodemailer": "^6.9.15",
+    "pg": "^8.16.3",
+    "puppeteer": "^23.7.1",
+    "prisma": "^7.1.0",
+    "xlsx": "^0.18.5"
+  }
+}

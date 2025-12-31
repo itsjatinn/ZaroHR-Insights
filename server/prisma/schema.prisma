@@ -1,0 +1,261 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum UserRole {
+  ADMIN
+  ORG_ADMIN
+}
+
+model User {
+  id             String       @id @default(uuid())
+  name           String?
+  email          String       @unique
+  passwordHash   String
+  passwordChangedAt DateTime?
+  role           UserRole     @default(ORG_ADMIN)
+  organizationId String?
+  createdAt      DateTime     @default(now())
+  organization   Organization? @relation(fields: [organizationId], references: [id])
+  passwordResets PasswordReset[]
+}
+
+model PasswordReset {
+  id        String   @id @default(uuid())
+  token     String   @unique
+  userId    String
+  expiresAt DateTime
+  usedAt    DateTime?
+  createdAt DateTime @default(now())
+  user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model Employee {
+  id                       String       @id @default(uuid())
+  srNo                     Int?         @map("Sr No")
+  oldEmpId                 String?      @map("Old Emp ID")
+  newEmpId                 String?      @map("New Emp ID")
+  employeeName             String?      @map("Employee Name")
+  lwd                      DateTime?    @map("LWD (Last working day)")
+  status                   String?      @map("Status")
+  employeePhysicalLocation String?      @map("Employee Physical Location")
+  entityLocationPayroll    String?      @map("Entity Location as per Payroll")
+  employeeBranch           String?      @map("Employee Branch")
+  currentAddress           String?      @map("Current_Address")
+  permanantAddress         String?      @map("Permanant_Address")
+  employeeCountry          String?      @map("Employee_Country")
+  employeeState            String?      @map("Employee_State")
+  employeeCity             String?      @map("Employee_City")
+  internalGrade            String?      @map("Internal Grade")
+  internalDesignation      String?      @map("Internal Designation")
+  externalDesignation      String?      @map("External Designation")
+  sbu                      String?      @map("SBU(Bussines Unit)")
+  function                 String?      @map("Function")
+  department1              String?      @map("Department 1")
+  department2              String?      @map("Department 2")
+  role                     String?      @map("Role")
+  fixedCTC                 Float?       @map("Fixed CTC")
+  variable                 Float?       @map("Variable")
+  annualSalary             Float?       @map("Annual Salary")
+  position                 String?      @map("position")
+  entity                   String?      @map("Entity")
+  dob                      DateTime?    @map("DOB")
+  doj                      DateTime?    @map("DOJ")
+  reportingManager         String?      @map("Reporting manager")
+  officialEmail            String?      @map("Official Email Id")
+  personalEmail            String?      @map("Personal Email ID")
+  gender                   String?      @map("Gender")
+  bloodGroup               String?      @map("Blood Group")
+  maritalStatus            String?      @map("Marital Status")
+  pan                      String?      @map("PAN")
+  aadharNo                 String?      @map("Aadhar No.")
+  pfUan                    String?      @map("PF UAN")
+  pfNo                     String?      @map("PF No.")
+  mobileNo                 String?      @map("Mobile No.")
+  bankName                 String?      @map("Bank Name")
+  bankAcNo                 String?      @map("Bank Ac no.")
+  ifscNo                   String?      @map("IFSC No.")
+  emergencyContactName     String?      @map("Emergency Contact Name")
+  emergencyContactRelation String?      @map("Emergency Contact Relationship")
+  emergencyContactNo       String?      @map("Emergency Contact No.")
+  spouseName               String?      @map("Spouse_Name")
+  spouseDob                DateTime?    @map("Spouse_Dob")
+  child1Name               String?      @map("Child1_Name")
+  child1Dob                DateTime?    @map("Child1_DOB")
+  child1Gender             String?      @map("Child1_Gender")
+  child2Name               String?      @map("Child2_Name")
+  child2Dob                DateTime?    @map("Child2_DOB")
+  child2Gender             String?      @map("Child2_Gender")
+  child3Name               String?      @map("Child3_Name")
+  child3Dob                DateTime?    @map("Child3_DOB")
+  child3Gender             String?      @map("Child3_Gender")
+  fatherName               String?      @map("Father_Name")
+  fatherDob                DateTime?    @map("Father_DOB")
+  motherName               String?      @map("Mother_Name")
+  motherDob                DateTime?    @map("Mother_DOB")
+  totalExperienceYears     Float?       @map("Total Yrs of Experience")
+  costCenterCode           String?      @map("Cost center code")
+  uploadId                 String?
+  educations               Education[]
+  upload                   Upload?      @relation(fields: [uploadId], references: [id])
+  experiences              Experience[]
+  ltipRecords              LTIP?
+}
+
+model Education {
+  id                   String   @id @default(uuid())
+  employeeId           String
+  highestQualification String?  @map("Highest Qualification")
+  instituteCollege     String?  @map("Institute/College")
+  yearOfPassing        String?  @map("Year of Passing")
+  secondQualification  String?  @map("2nd Highest Qualification")
+  instituteCollege2    String?  @map("Institute/College.1")
+  yearOfPassing2       String?  @map("Year of Passing.1")
+  uploadId             String?
+  employee             Employee @relation(fields: [employeeId], references: [id])
+  upload               Upload?  @relation(fields: [uploadId], references: [id])
+}
+
+model Experience {
+  id             String    @id @default(uuid())
+  employeeId     String
+  orgLatest      String?   @map("Name of Previous Organization_Latest")
+  roleLatest     String?   @map("Role/Designation")
+  fromDateLatest DateTime? @map("From Date")
+  toDateLatest   DateTime? @map("To Date")
+  org1           String?   @map("Name of Previous to Pevious Org")
+  designation1   String?   @map("Designation")
+  fromDate1      DateTime? @map("From Date.1")
+  toDate1        DateTime? @map("To Date.1")
+  org2           String?   @map("Name of Previous to Pevious Org.1")
+  designation2   String?   @map("Designation.1")
+  fromDate2      DateTime? @map("From Date.2")
+  toDate2        DateTime? @map("To Date.2")
+  org3           String?   @map("Name of Previous to Pevious Org.2")
+  designation3   String?   @map("Designation.2")
+  fromDate3      DateTime? @map("From Date.3")
+  toDate3        DateTime? @map("To Date.3")
+  org4           String?   @map("Name of Previous to Pevious Org.3")
+  designation4   String?   @map("Designation.3")
+  fromDate4      DateTime? @map("From Date.4")
+  toDate4        DateTime? @map("To Date.4")
+  uploadId       String?
+  employee       Employee  @relation(fields: [employeeId], references: [id])
+  upload         Upload?   @relation(fields: [uploadId], references: [id])
+}
+
+model LTIP {
+  id           String    @id @default(uuid())
+  employeeId   String    @unique
+  ltip         Float?    @map("LTIP")
+  ltipDate     DateTime? @map("LTIP DATE")
+  recoveryDate DateTime? @map("Recovery Date")
+  uploadId     String?
+  employee     Employee  @relation(fields: [employeeId], references: [id])
+  upload       Upload?   @relation(fields: [uploadId], references: [id])
+}
+
+model EmployeeDashboard {
+  id                       String    @id @default(uuid())
+  empId                    String?   @map("Emp ID")
+  newEmpId                 String?   @map("New Emp ID")
+  employeeName             String?   @map("Employee Name")
+  finalLwd                 DateTime? @map("Final LWD")
+  employeePhysicalLocation String?   @map("Employee Physical Location")
+  designation              String?   @map("Designation")
+  entity                   String?   @map("Entity")
+  doj                      DateTime? @map("DOJ")
+  dob                      DateTime? @map("DOB")
+  gender                   String?   @map("Gender")
+  ctc                      Float?    @map("CTC")
+  month                    String?   @map("Month")
+  age                      Float?    @map("Age")
+  tenure                   Float?    @map("Tenure")
+  presentation             String?   @map("Presentation")
+  dynamicStartDate         DateTime? @map("DYANMIC START DATE")
+  hires                    Int?      @map("Hires")
+  worklevel                String?   @map("Worklevel")
+  uploadId                 String?
+  organizationId           String?
+  dashboardMonthId         String?
+  upload                   Upload?   @relation(fields: [uploadId], references: [id])
+  organization             Organization? @relation(fields: [organizationId], references: [id])
+  dashboardMonth           DashboardMonth? @relation(fields: [dashboardMonthId], references: [id])
+
+  @@map("employee_dashboard_master")
+  @@index([organizationId, dashboardMonthId])
+}
+
+model Upload {
+  id                 String              @id @default(uuid())
+  filename           String?
+  uploadedAt         DateTime            @default(now())
+  organizationId     String?
+  dashboardMonthId   String?
+  educations         Education[]
+  employees          Employee[]
+  experiences        Experience[]
+  ltipRecords        LTIP[]
+  employeeDashboards EmployeeDashboard[]
+  organization       Organization?       @relation(fields: [organizationId], references: [id])
+  dashboardMonth     DashboardMonth?     @relation(fields: [dashboardMonthId], references: [id])
+  @@index([organizationId, dashboardMonthId])
+}
+
+model Organization {
+  id                 String              @id @default(uuid())
+  name               String              @unique
+  code               String?             @unique
+  uploads            Upload[]
+  employeeDashboards EmployeeDashboard[]
+  users              User[]
+  dashboardConfigs   DashboardConfig[]
+  dashboardReleases  DashboardRelease[]
+}
+
+model DashboardMonth {
+  id                 String              @id @default(uuid())
+  label              String
+  monthKey           String              @unique
+  uploads            Upload[]
+  employeeDashboards EmployeeDashboard[]
+  releases           DashboardRelease[]
+}
+
+model DashboardConfig {
+  id             String       @id @default(uuid())
+  organizationId String
+  chartKey       String
+  enabled        Boolean      @default(true)
+  updatedAt      DateTime     @updatedAt
+  organization   Organization @relation(fields: [organizationId], references: [id])
+
+  @@unique([organizationId, chartKey])
+  @@index([organizationId])
+}
+
+model DashboardRelease {
+  id               String       @id @default(uuid())
+  organizationId   String
+  dashboardMonthId String
+  releasedAt       DateTime     @default(now())
+  organization     Organization @relation(fields: [organizationId], references: [id])
+  dashboardMonth   DashboardMonth @relation(fields: [dashboardMonthId], references: [id])
+
+  @@unique([organizationId, dashboardMonthId])
+  @@index([organizationId])
+  @@index([dashboardMonthId])
+}
+
+model DemoLead {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  source    String?
+  createdAt DateTime @default(now())
+}
