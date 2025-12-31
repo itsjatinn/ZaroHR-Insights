@@ -608,6 +608,18 @@ type ChartKey =
 
 type ChartConfig = Record<ChartKey, boolean>;
 
+const buildDefaultChartConfig = (): ChartConfig => ({
+  manpower_rampup: true,
+  hires_exits: true,
+  worklevel_overview: true,
+  entity_overview: true,
+  overall_attrition: true,
+  entity_attrition: true,
+  age_attrition: true,
+  gender_attrition: true,
+  tenure_attrition: true,
+});
+
 type HistoryState = {
   view: View;
   dashboardSelection?: DashboardSelection | null;
@@ -649,17 +661,9 @@ function App() {
   const [entityError, setEntityError] = useState<string | null>(null);
   const [entityLoading, setEntityLoading] = useState(false);
   const [chartsReady, setChartsReady] = useState(false);
-  const [chartConfig, setChartConfig] = useState<ChartConfig>({
-    manpower_rampup: true,
-    hires_exits: true,
-    worklevel_overview: true,
-    entity_overview: true,
-    overall_attrition: true,
-    entity_attrition: true,
-    age_attrition: true,
-    gender_attrition: true,
-    tenure_attrition: true,
-  });
+  const [chartConfig, setChartConfig] = useState<ChartConfig>(
+    buildDefaultChartConfig
+  );
 
   const applyDemoData = useCallback(() => {
     setManpowerData(DEMO_MANPOWER_DATA);
@@ -1118,17 +1122,7 @@ function App() {
 
   useEffect(() => {
     if (!resolvedOrganizationId) {
-      setChartConfig({
-        manpower_rampup: true,
-        hires_exits: true,
-        worklevel_overview: true,
-        entity_overview: true,
-        overall_attrition: true,
-        entity_attrition: true,
-        age_attrition: true,
-        gender_attrition: true,
-        tenure_attrition: true,
-      });
+      setChartConfig(buildDefaultChartConfig());
       return;
     }
     let hasCachedConfig = false;
@@ -1137,8 +1131,14 @@ function App() {
       const cached = window.localStorage.getItem(storageKey);
       if (cached) {
         try {
-          const parsed = JSON.parse(cached) as Record<string, boolean>;
-          setChartConfig(parsed);
+          const parsed = JSON.parse(cached) as Partial<ChartConfig>;
+          const nextMap = buildDefaultChartConfig();
+          (Object.keys(nextMap) as ChartKey[]).forEach((key) => {
+            if (typeof parsed[key] === "boolean") {
+              nextMap[key] = parsed[key] as boolean;
+            }
+          });
+          setChartConfig(nextMap);
           hasCachedConfig = true;
         } catch {
           window.localStorage.removeItem(storageKey);
@@ -1154,17 +1154,7 @@ function App() {
           throw new Error(await response.text());
         }
         const payload = await response.json();
-        const nextMap: ChartConfig = {
-          manpower_rampup: true,
-          hires_exits: true,
-          worklevel_overview: true,
-          entity_overview: true,
-          overall_attrition: true,
-          entity_attrition: true,
-          age_attrition: true,
-          gender_attrition: true,
-          tenure_attrition: true,
-        };
+        const nextMap = buildDefaultChartConfig();
         (payload.charts ?? []).forEach(
           (item: { key: string; enabled: boolean }) => {
             if (item.key in nextMap) {
@@ -1178,17 +1168,7 @@ function App() {
         }
       } catch {
         if (!hasCachedConfig) {
-          setChartConfig({
-            manpower_rampup: true,
-            hires_exits: true,
-            worklevel_overview: true,
-            entity_overview: true,
-            overall_attrition: true,
-            entity_attrition: true,
-            age_attrition: true,
-            gender_attrition: true,
-            tenure_attrition: true,
-          });
+          setChartConfig(buildDefaultChartConfig());
         }
       }
     };
@@ -1206,12 +1186,6 @@ function App() {
     const timeoutId = window.setTimeout(() => setChartsReady(true), 0);
     return () => window.clearTimeout(timeoutId);
   }, [chartsReady]);
-
-  useEffect(() => {
-    if (dashboardRef.current) {
-      setDashboardReady(true);
-    }
-  }, [manpowerData, hireData, demographics, entityDemographics, attritionData]);
 
   const lastManpowerDate = useMemo(
     () =>

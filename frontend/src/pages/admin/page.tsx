@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import type { ReactNode } from "react";
 import "./admin.css";
 import { AdminHeader } from "./AdminHeader";
 import { AdminSidebar } from "./AdminSidebar";
@@ -28,7 +29,7 @@ type AdminPanel = {
   label: string;
   title: string;
   detail: string;
-  render: () => JSX.Element;
+  render: () => ReactNode;
 };
 
 function AdminPage({

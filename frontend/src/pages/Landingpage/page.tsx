@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import "./App.css";
 import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
@@ -19,34 +19,6 @@ const Index = ({
   onContactAction,
   onDemoAction,
 }: LandingPageProps) => {
-  const [demoOpen, setDemoOpen] = useState(false);
-
-  const openDemo = () => setDemoOpen(true);
-  const closeDemo = () => setDemoOpen(false);
-
-  useEffect(() => {
-    const { body, documentElement } = document;
-    const prevOverflow = body.style.overflowY;
-
-    const updateScrollLock = () => {
-      if (demoOpen) {
-        body.style.overflowY = "hidden";
-        return;
-      }
-      const pageHeight = Math.max(body.scrollHeight, documentElement.scrollHeight);
-      const viewportHeight = window.innerHeight;
-      body.style.overflowY = pageHeight > viewportHeight ? "auto" : "hidden";
-    };
-
-    updateScrollLock();
-    window.addEventListener("resize", updateScrollLock);
-
-    return () => {
-      window.removeEventListener("resize", updateScrollLock);
-      body.style.overflowY = prevOverflow;
-    };
-  }, [demoOpen]);
-
   useEffect(() => {
     const servicesSection = document.querySelector("#services");
     if (!servicesSection) {
@@ -119,58 +91,6 @@ const Index = ({
         onPrimaryAction={onContactAction}
       />
       <Footer />
-      {demoOpen && (
-        <div className="landing-demo" role="dialog" aria-modal="true">
-          <div className="landing-demo__backdrop" onClick={closeDemo} />
-          <div className="landing-demo__panel" role="document">
-            <button
-              type="button"
-              className="landing-demo__close"
-              onClick={closeDemo}
-              aria-label="Close demo preview"
-            >
-              Close
-            </button>
-            <div className="landing-demo__preview">
-              <div className="landing-demo__header">
-                <div className="landing-demo__title">HR Analytics Preview</div>
-                <div className="landing-demo__meta">
-                  Sample dashboard snapshot
-                </div>
-              </div>
-              <div className="landing-demo__stats">
-                {Array.from({ length: 4 }).map((_, index) => (
-                  <div className="landing-demo__stat" key={index}>
-                    <div className="landing-demo__stat-label" />
-                    <div className="landing-demo__stat-value" />
-                  </div>
-                ))}
-              </div>
-              <div className="landing-demo__grid">
-                {Array.from({ length: 4 }).map((_, index) => (
-                  <div className="landing-demo__chart" key={index}>
-                    <div className="landing-demo__chart-title" />
-                    <div className="landing-demo__chart-body" />
-                  </div>
-                ))}
-              </div>
-              <div className="landing-demo__mask">
-                <div className="landing-demo__mask-content">
-                  <h3>Demo Preview</h3>
-                  <p>Full analytics are available after sign in.</p>
-                  <button
-                    type="button"
-                    className="landing-button landing-button--primary landing-button--lg"
-                    onClick={onPrimaryAction}
-                  >
-                    Start Free Trial
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </main>
   );
 };
