@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "buildCommand": "npm --prefix src run build",
+  "buildCommand": "npm --prefix src install && npm --prefix src run build",
   "outputDirectory": "src/dist",
   "rewrites": [
     { "source": "/api/(.*)", "destination": "/api/$1" },
