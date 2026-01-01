@@ -24,10 +24,10 @@
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
-  "include": ["src"],
+  "include": ["**/*"],
   "exclude": [
-    "src/pages/Landingpage/components/ui",
-    "src/pages/Landingpage/components/hooks",
-    "src/pages/Landingpage/components/NavLink.tsx"
+    "pages/Landingpage/components/ui",
+    "pages/Landingpage/components/hooks",
+    "pages/Landingpage/components/NavLink.tsx"
   ]
 }
