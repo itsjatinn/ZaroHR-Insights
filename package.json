@@ -3,10 +3,13 @@
   "private": true,
   "version": "1.0.0",
   "packageManager": "npm@10.9.0",
+  "engines": {
+    "node": "20.x"
+  },
   "scripts": {
     "dev": "concurrently \"node api/dev-server.js\" \"npm --prefix src run dev\"",
     "dev:api": "node api/dev-server.js",
-    "postinstall": "prisma generate --config server/prisma.config.ts"
+    "postinstall": "npm --prefix server install && npm --prefix server run prisma:generate"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.0",
