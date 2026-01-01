@@ -6,7 +6,7 @@ Local Development (Vercel-style)
 
 2) Install dependencies:
    - npm install
-   - cd src && npm install
+   - cd src/app && npm install
 
 3) Run the app:
    - npm run dev
