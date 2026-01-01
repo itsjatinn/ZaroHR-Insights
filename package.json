@@ -1,0 +1,25 @@
+{
+  "name": "hr-dashboard-root",
+  "private": true,
+  "version": "1.0.0",
+  "packageManager": "npm@10.9.0",
+  "scripts": {
+    "dev": "concurrently \"node api/dev-server.js\" \"npm --prefix src run dev\"",
+    "dev:api": "node api/dev-server.js",
+    "postinstall": "prisma generate --config server/prisma.config.ts"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.0",
+    "@prisma/adapter-pg": "^7.1.0",
+    "@prisma/client": "^7.1.0",
+    "concurrently": "^9.2.0",
+    "dotenv": "^17.2.3",
+    "exceljs": "^4.4.0",
+    "formidable": "^3.5.4",
+    "nodemailer": "^6.9.15",
+    "pg": "^8.16.3",
+    "prisma": "^7.1.0",
+    "puppeteer": "^23.7.1",
+    "xlsx": "^0.18.5"
+  }
+}
