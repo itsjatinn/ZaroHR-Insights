@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from "react";
 
 const stats = [
   { value: 2, suffix: "M+", label: "Employees Analyzed", description: "Data-driven decisions" },
-  { value: 98, suffix: "%", label: "Client Satisfaction", description: "Industry-leading support" },
+  { value: 100, suffix: "%", label: "Client Satisfaction", description: "Industry-leading support" },
   { value: 15, suffix: "+", label: "Years Experience", description: "HR analytics expertise" },
 ];
 
@@ -68,7 +68,7 @@ const StatsSection = () => {
             <span className="landing-gradient-text">Matter</span>
           </h2>
           <p className="landing-subtitle">
-            We've helped hundreds of organizations transform their HR operations 
+            We've helped many organizations transform their HR operations 
             with actionable insights and measurable outcomes.
           </p>
         </div>

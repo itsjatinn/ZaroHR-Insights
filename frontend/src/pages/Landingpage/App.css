@@ -223,6 +223,18 @@
   grid-template-columns: repeat(3, minmax(360px, 1fr));
 }
 
+@media (max-width: 1100px) {
+  .landing-grid--three {
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  }
+}
+
+@media (max-width: 820px) {
+  .landing-grid--three {
+    grid-template-columns: 1fr;
+  }
+}
+
 .landing-hero {
   min-height: 92vh;
   padding-top: 1rem;
@@ -1507,6 +1519,34 @@
 
   .landing-button--xl {
     width: 100%;
+  }
+}
+
+@media (max-width: 640px) {
+  .landing-card {
+    padding: 1.6rem;
+  }
+
+  .landing-services__icon {
+    margin-bottom: 1.1rem;
+  }
+
+  .landing-services__tags {
+    margin-bottom: 0.5rem;
+  }
+
+  .landing-testimonial-card {
+    min-height: auto;
+    padding: 2rem 1.6rem 1.7rem;
+  }
+
+  .landing-testimonial__chip {
+    left: 1.6rem;
+    top: -1.1rem;
+  }
+
+  .landing-testimonial__quote {
+    margin-bottom: 1.6rem;
   }
 }
 
