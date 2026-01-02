@@ -13,6 +13,15 @@
       "use": "@vercel/node"
     }
   ],
+  "functions": {
+    "src/api/**/*.js": {
+      "includeFiles": [
+        "server/src/**",
+        "server/prisma/**",
+        "server/node_modules/**"
+      ]
+    }
+  },
   "routes": [
     { "src": "/api/(.*)", "dest": "/src/api/[...path].js" },
     { "src": "/(.*\\.(css|js|map|png|jpg|jpeg|gif|svg|webp|ico|woff2|woff|ttf))", "dest": "/src/app/$1" },

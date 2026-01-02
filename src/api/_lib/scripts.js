@@ -34,7 +34,7 @@ const runNodeScript = async (scriptPath, args = []) => {
 };
 
 const runIngest = async (filePath, options = {}) => {
-  const args = ["run", "ingest", "--", filePath];
+  const args = [filePath];
   if (options.organizationName) {
     args.push("--org-name", options.organizationName);
   }
@@ -47,7 +47,7 @@ const runIngest = async (filePath, options = {}) => {
   if (options.monthLabel) {
     args.push("--month-label", options.monthLabel);
   }
-  return runScript("npm", args);
+  return runNodeScript("src/ingest.js", args);
 };
 
 module.exports = {

@@ -2,7 +2,7 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const { randomUUID } = require("crypto");
-const formidable = require("formidable");
+const { IncomingForm } = require("formidable");
 
 const { fetchAll, fetchOne, withTransaction, replaceParams } = require("./_lib/db");
 const {
@@ -79,7 +79,7 @@ const getPayloadValue = (payload, key, fallbackKey) => {
 
 const parseForm = (req) =>
   new Promise((resolve, reject) => {
-    const form = formidable({ multiples: false, keepExtensions: true });
+    const form = new IncomingForm({ multiples: false, keepExtensions: true });
     form.parse(req, (err, fields, files) => {
       if (err) return reject(err);
       resolve({ fields, files });
