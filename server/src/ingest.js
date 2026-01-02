@@ -13,20 +13,16 @@ if (!databaseUrl) {
 
 const { Pool } = require("pg");
 const serverRoot = path.resolve(__dirname, "..");
-const prismaAdapterPath = path.join(
-  serverRoot,
-  "node_modules",
-  "@prisma",
-  "adapter-pg"
-);
-const prismaClientPath = path.join(
-  serverRoot,
-  "node_modules",
-  "@prisma",
-  "client"
-);
-const { PrismaPg } = require(prismaAdapterPath);
-const { PrismaClient } = require(prismaClientPath);
+const serverPrismaDir = path.join(serverRoot, "node_modules", ".prisma", "client");
+const useServerModules = fs.existsSync(serverPrismaDir);
+const prismaAdapterImport = useServerModules
+  ? path.join(serverRoot, "node_modules", "@prisma", "adapter-pg")
+  : "@prisma/adapter-pg";
+const prismaClientImport = useServerModules
+  ? path.join(serverRoot, "node_modules", "@prisma", "client")
+  : "@prisma/client";
+const { PrismaPg } = require(prismaAdapterImport);
+const { PrismaClient } = require(prismaClientImport);
 
 const pool = new Pool({
   connectionString: databaseUrl,

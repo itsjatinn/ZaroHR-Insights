@@ -12,7 +12,7 @@
       "src": "src/api/**/*.js",
       "use": "@vercel/node",
       "config": {
-        "includeFiles": "{server/**,node_modules/.prisma/**,node_modules/@prisma/**}"
+        "includeFiles": "{server/src/**,server/prisma/**,server/node_modules/.prisma/**,server/node_modules/@prisma/**,node_modules/.prisma/**,node_modules/@prisma/**}"
       }
     }
   ],
