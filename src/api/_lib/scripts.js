@@ -1,7 +1,7 @@
 const { spawn } = require("child_process");
 const path = require("path");
 
-const projectRoot = path.resolve(__dirname, "..", "..");
+const projectRoot = path.resolve(__dirname, "..", "..", "..");
 const serverDir = path.join(projectRoot, "server");
 
 const runScript = (command, args, options = {}) =>
