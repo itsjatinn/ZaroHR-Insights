@@ -302,13 +302,13 @@ const buildHiresSql = (granularity, filterEntities, filterOrg, filterMonth) => {
     SELECT
         period_start,
         (
-            SELECT COUNT(*)
+            SELECT COUNT(*)::int
             FROM earliest_join ej
             WHERE date_trunc('${grain}', ej."DOJ") = period_start
               ${entityClauseJoin}
         ) AS hires,
         (
-            SELECT COUNT(*)
+            SELECT COUNT(*)::int
             FROM latest ed
             WHERE ed."Final LWD" IS NOT NULL
               AND date_trunc('${grain}', ed."Final LWD") = period_start
@@ -876,7 +876,7 @@ const buildTenureSql = (filterEntities, filterOrg, filterMonth) => {
       "GREATEST(",
       `(EXTRACT(YEAR FROM ${ref}) - EXTRACT(YEAR FROM ed."DOJ")) * 12 `,
       `+ (EXTRACT(MONTH FROM ${ref}) - EXTRACT(MONTH FROM ed."DOJ")) `,
-      '+ CASE WHEN EXTRACT(DAY FROM ${ref}) >= EXTRACT(DAY FROM ed."DOJ") THEN 0 ELSE -1 END',
+      `+ CASE WHEN EXTRACT(DAY FROM ${ref}) >= EXTRACT(DAY FROM ed."DOJ") THEN 0 ELSE -1 END`,
       ", 0)",
     ].join("");
 
