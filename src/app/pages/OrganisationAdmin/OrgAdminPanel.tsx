@@ -31,6 +31,12 @@ function OrgAdminPanel({
   const initial = displayName.trim().charAt(0).toUpperCase() || "A";
   const panels = [
     {
+      id: "org-overview",
+      label: "Org overview",
+      detail: "Created dashboards and org health checks.",
+      render: () => <OrgOverview organizationId={organizationId} />,
+    },
+    {
       id: "analytics",
       label: "Analytics dashboard",
       detail: "Dashboard visibility and KPIs.",
@@ -47,14 +53,8 @@ function OrgAdminPanel({
       detail: "Headcount, tenure, and diversity summary.",
       render: () => <EmployeeSummary organizationId={organizationId} />,
     },
-    {
-      id: "org-overview",
-      label: "Org overview",
-      detail: "Created dashboards and org health checks.",
-      render: () => <OrgOverview organizationId={organizationId} />,
-    },
   ];
-  const [activeId, setActiveId] = useState(panels[0].id);
+  const [activeId, setActiveId] = useState("org-overview");
   const [theme, setTheme] = useState<"dark" | "light">("light");
   const activePanel = panels.find((panel) => panel.id === activeId) ?? panels[0];
 

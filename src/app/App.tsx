@@ -1349,6 +1349,13 @@ function App() {
   const hireTickInterval = computeTickInterval(formattedHires.length);
   const totalHiresDisplay = totalHires;
   const totalExitsDisplay = totalExits;
+  const hasAnalyticsData = Boolean(
+    manpowerData.length ||
+      hireData.length ||
+      demographics ||
+      entityDemographics ||
+      attritionData
+  );
   const {
     worklevelStats,
     worklevelTableRows,
@@ -1720,7 +1727,7 @@ function App() {
       <div className="admin-root">
         <OrgAdminPanel
           organizationId={currentUser?.organizationId ?? null}
-          createdBy={currentUser?.name || currentUser?.email || "Admin"}
+          createdBy={currentUser?.name ?? null}
           userName={currentUser?.name || currentUser?.email}
           onExit={() => navigate("dashboard")}
           onSignOut={handleSignOut}
@@ -1892,7 +1899,7 @@ function App() {
         </div>
       )}
 
-      {!analyticsLoading && (
+      {!analyticsLoading && hasAnalyticsData && (
         <section className="card analytics-card" ref={dashboardRef}>
 
         <div className="summary-cards">

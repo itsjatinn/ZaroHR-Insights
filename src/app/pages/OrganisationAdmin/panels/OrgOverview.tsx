@@ -145,72 +145,76 @@ function OrgOverview({ organizationId }: { organizationId?: string | null }) {
 
       {error && <p className="admin-upload-error">⚠️ {error}</p>}
 
-      <div className="admin-summary">
-        {summary.map((item) => (
-          <div key={item.label} className="admin-summary-card">
-            <div>
-              <p className="admin-summary-card__label">{item.label}</p>
-              <p className="admin-summary-card__value">{item.value}</p>
-              <p className="admin-summary-card__meta">{item.meta}</p>
-            </div>
-            <span className="admin-summary-card__icon" aria-hidden="true">
-              {item.icon}
-            </span>
-          </div>
-        ))}
-      </div>
-
-      <div className="admin-overview-grid">
-        <div className="admin-card admin-card--tall">
-          <div className="admin-card__header">
-            <div>
-              <h3>Recent dashboards</h3>
-              <p className="admin-card__subtitle">Latest releases for {orgName}</p>
-            </div>
-          </div>
-          <div className="admin-list admin-list--cards">
-            {recentDashboards.length ? (
-              recentDashboards.map((item) => (
-                <div key={`${item.title}-${item.updated}`} className="admin-list__item">
-                  <div>
-                    <p className="admin-list__title">{item.title}</p>
-                    <p className="admin-list__detail">{item.org}</p>
-                  </div>
-                  <div className="admin-list__meta">
-                    <span>Month</span>
-                    <strong>{item.updated}</strong>
-                  </div>
+      {!loading && (
+        <>
+          <div className="admin-summary">
+            {summary.map((item) => (
+              <div key={item.label} className="admin-summary-card">
+                <div>
+                  <p className="admin-summary-card__label">{item.label}</p>
+                  <p className="admin-summary-card__value">{item.value}</p>
+                  <p className="admin-summary-card__meta">{item.meta}</p>
                 </div>
-              ))
-            ) : (
-              <p className="admin-list__detail">No dashboards released yet.</p>
-            )}
+                <span className="admin-summary-card__icon" aria-hidden="true">
+                  {item.icon}
+                </span>
+              </div>
+            ))}
           </div>
-        </div>
 
-        <div className="admin-card admin-card--tall">
-          <div className="admin-card__header">
-            <div>
-              <h3>Alerts</h3>
-              <p className="admin-card__subtitle">Items that need attention</p>
+          <div className="admin-overview-grid">
+            <div className="admin-card admin-card--tall">
+              <div className="admin-card__header">
+                <div>
+                  <h3>Recent dashboards</h3>
+                  <p className="admin-card__subtitle">Latest releases for {orgName}</p>
+                </div>
+              </div>
+              <div className="admin-list admin-list--cards">
+                {recentDashboards.length ? (
+                  recentDashboards.map((item) => (
+                    <div key={`${item.title}-${item.updated}`} className="admin-list__item">
+                      <div>
+                        <p className="admin-list__title">{item.title}</p>
+                        <p className="admin-list__detail">{item.org}</p>
+                      </div>
+                      <div className="admin-list__meta">
+                        <span>Month</span>
+                        <strong>{item.updated}</strong>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="admin-list__detail">No dashboards released yet.</p>
+                )}
+              </div>
+            </div>
+
+            <div className="admin-card admin-card--tall">
+              <div className="admin-card__header">
+                <div>
+                  <h3>Alerts</h3>
+                  <p className="admin-card__subtitle">Items that need attention</p>
+                </div>
+              </div>
+              <div className="admin-list admin-list--cards">
+                {alerts.length ? (
+                  alerts.map((item) => (
+                    <div key={item.title} className="admin-list__item">
+                      <div>
+                        <p className="admin-list__title">{item.title}</p>
+                        <p className="admin-list__detail">{item.detail}</p>
+                      </div>
+                    </div>
+                  ))
+                ) : (
+                  <p className="admin-list__detail">No alerts right now.</p>
+                )}
+              </div>
             </div>
           </div>
-          <div className="admin-list admin-list--cards">
-            {alerts.length ? (
-              alerts.map((item) => (
-                <div key={item.title} className="admin-list__item">
-                  <div>
-                    <p className="admin-list__title">{item.title}</p>
-                    <p className="admin-list__detail">{item.detail}</p>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="admin-list__detail">No alerts right now.</p>
-            )}
-          </div>
-        </div>
-      </div>
+        </>
+      )}
     </div>
   );
 }

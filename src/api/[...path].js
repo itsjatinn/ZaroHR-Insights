@@ -2,7 +2,7 @@ const fs = require("fs");
 const os = require("os");
 const path = require("path");
 const { randomUUID } = require("crypto");
-const { IncomingForm } = require("formidable");
+const formidable = require("formidable");
 
 const { fetchAll, fetchOne, withTransaction, replaceParams } = require("./_lib/db");
 const {
@@ -77,9 +77,24 @@ const getPayloadValue = (payload, key, fallbackKey) => {
   return undefined;
 };
 
+const createForm = (options) => {
+  if (typeof formidable === "function") {
+    return formidable(options);
+  }
+  if (formidable?.default && typeof formidable.default === "function") {
+    return formidable.default(options);
+  }
+  const IncomingForm =
+    formidable?.IncomingForm || formidable?.Formidable || formidable?.formidable;
+  if (typeof IncomingForm === "function") {
+    return new IncomingForm(options);
+  }
+  throw new Error("Formidable is not available.");
+};
+
 const parseForm = (req) =>
   new Promise((resolve, reject) => {
-    const form = new IncomingForm({ multiples: false, keepExtensions: true });
+    const form = createForm({ multiples: false, keepExtensions: true });
     form.parse(req, (err, fields, files) => {
       if (err) return reject(err);
       resolve({ fields, files });
@@ -351,11 +366,16 @@ module.exports = async (req, res) => {
 
     if (method === "POST" && pathname === "/uploads") {
       const { fields, files } = await parseForm(req);
-      const file = files.file;
+      const file = Array.isArray(files.file) ? files.file[0] : files.file;
       if (!file) {
         return textResponse(res, 400, "Missing file.");
       }
-      if (!ALLOWED_MIME_TYPES.has(file.mimetype)) {
+      const fileMime = file.mimetype || file.type || "";
+      const originalName = file.originalFilename || file.newFilename || "";
+      const extension = path.extname(originalName).toLowerCase();
+      const isAllowedMime = ALLOWED_MIME_TYPES.has(fileMime);
+      const isAllowedExt = extension === ".xlsx" || extension === ".xls";
+      if (!isAllowedMime && !isAllowedExt) {
         return textResponse(res, 400, "Invalid file type");
       }
       const tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), "hr-upload-"));
