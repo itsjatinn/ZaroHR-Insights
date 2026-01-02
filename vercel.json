@@ -1,25 +1,15 @@
 {
   "version": 2,
-  "builds": [
-    {
-      "src": "src/app/package.json",
-      "use": "@vercel/static-build",
-      "config": {
-        "distDir": "dist"
-      }
-    },
-    {
-      "src": "src/api/**/*.js",
-      "use": "@vercel/node",
-      "config": {
-        "includeFiles": "{server/src/**,server/prisma/**,server/node_modules/.prisma/**,server/node_modules/@prisma/**,node_modules/.prisma/**,node_modules/@prisma/**}"
-      }
+  "installCommand": "npm install && npm --prefix server install && npm --prefix server run prisma:generate && npx prisma generate --schema server/prisma/schema.prisma",
+  "buildCommand": "npm --prefix src/app run build",
+  "outputDirectory": "src/app/dist",
+  "functions": {
+    "api/**/*.js": {
+      "includeFiles": "{server/src/ingest.js,server/prisma/**,node_modules/.prisma/**,node_modules/@prisma/**}"
     }
-  ],
+  },
   "routes": [
-    { "src": "/api/(.*)", "dest": "/src/api/[...path].js" },
-    { "src": "/(.*\\.(css|js|map|png|jpg|jpeg|gif|svg|webp|ico|woff2|woff|ttf))", "dest": "/src/app/$1" },
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/src/app/index.html" }
+    { "src": "/api/(.*)", "dest": "/api/[...path].js" },
+    { "src": "/(.*)", "dest": "/index.html" }
   ]
 }
